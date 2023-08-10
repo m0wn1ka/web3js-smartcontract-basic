@@ -5,7 +5,7 @@ and saves it as a variable and gives it back
 <br>
 it is a integration of frontend and backend at basic level
 
-## requirements<br>b
+## requirements<br>
 lite-server,wallet,pm,node,some testether,some ide(remix)<br>
 ## lite server<br>
 ->lite-server is a lightweight development web server with support for Single Page Apps (SPAs)<br>
