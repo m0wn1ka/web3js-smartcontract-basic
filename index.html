@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LearnWeb3 First dApp</title>
+ 
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  
+    div {
+      width: 20%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    button {
+      width: 100%;
+      margin: 10px 0px 5px 0px;
+    }
+  </style>
+   </head>
+  <body>
+    <script
+  src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"
+  type="application/javascript" ></script>
+  <script>
+const radhaContractAddress = "0x0E0CfFAC8039E5E2f859e68C4912ED7547bA5D76";
+const radhaContractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_tiffin",
+				"type": "string"
+			}
+		],
+		"name": "setFav",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getFav",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+
+// Currently these two are undefined, we will use Ethers to assign them values
+let radhaContract = undefined;
+let signer = undefined;
+  </script>
+  <script>
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "sepolia");
+    provider.send("eth_requestAccounts", []).then(() => {
+  provider.listAccounts().then((accounts) => {
+    signer = provider.getSigner(accounts[0]);
+    radhaContract = new ethers.Contract(
+      radhaContractAddress,
+      radhaContractABI,
+      signer
+    );
+  });
+});
+  </script>
+  <script>
+    async function getFav() {
+  const fav = await radhaContract.getFav();
+  document.getElementById("showFav").innerText = `Your fav tiffin: ${fav}`;
+  console.log(fav);
+}
+
+async function setFav() {
+  const fav = document.getElementById("fav").value;
+  await radhaContract.setFav(fav);
+}
+  </script>
+  <!-- We will add more code here -->
+  <div>
+    <h1>This is my dApp!</h1>
+    <p>Here we can set or get the fav tiffin:</p>
+    <label for="fav">Input fav tiffin:</label> <br />
+    <input type="text" id="fav" />
+
+    <button onclick="getFav()">Get fav tiffin</button>
+<button onclick="setFav()">Set fav tiffin</button>
+    <p id="showFav"></p>
+  </div>
+  </body>
+</html>
